@@ -1,0 +1,59 @@
+name: 'Build and Test'
+description: 'Runs gradle build and test step with cache'
+inputs:
+  java-version:
+    description: 'The Java version to set up. Takes a whole or semver Java version.'
+    required: true
+    default: '17'
+  java-distribution:
+    description: 'Java distribution.'
+    required: true
+    default: 'adopt'
+  cache-version:
+    description: Cache version; increment this for a fresh cache.
+    required: true
+    default: 'v1'
+  cache-key:
+    description: File path for cache key that will be calculated from gradle files
+    default: 'keys.txt'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Say Hi!
+      run: echo "${{ build_and_test.who-to-greet }}"
+      shell: bash
+    - name: Env!
+      run: echo "${{ JACOCO_REPORT_REGEX }}"
+      shell: bash
+    - name: Check GithubPath - experimental
+      run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+    - name: Generate cache file
+      run: find . -name '*.gradle' -type f -exec openssl md5 {} \; | sort > ${{ inputs.cache-key }}
+      shell: bash
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        key:
+          - ma-java-${{ inputs.cache-version }}-{{ .Branch }}-{{ checksum "${{ inputs.cache-key }}" }}
+          - ma-java-${{ inputs.cache-version }}-{{ .Branch }}
+          - ma-java-${{ inputs.cache-version }}
+    - name: Run test cases
+      run: ./gradlew --no-daemon --stacktrace test
+      shell: bash
+    - name: Store cache
+      uses: actions/cache@v3
+      with:
+        key: ma-java-${{ inputs.cache-version }}-{{ .Branch }}-{{ checksum "${{ inputs.cache-key }}" }}
+        paths: [~/.m2, ~/.gradle]
+    - name: Collect test results
+      run: |
+          mkdir -p ~/test-results/junit/ find . -type f -regex ".*/test-results/test/.*xml" -exec echo {} \; -exec cp {} ~/test-results/junit/ \;
+          mkdir -p /tmp/codacy find . -type f -regex "$JACOCO_REPORT_REGEX" -exec echo {} \; -exec cp --parents {} /tmp/codacy \;
+      shell: bash
+    - name: Store Test Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: /tmp/codacy
