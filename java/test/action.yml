@@ -1,0 +1,34 @@
+name: 'MA Java CI Test'
+description: 'A collection of common java jobs and cache operations'
+inputs:
+  java-version:
+    description: 'The Java version to set up. Takes a whole or semver Java version.'
+    required: true
+    default: 17
+  java-distribution:
+    description: 'Java distribution.'
+    required: true
+    default: 'adopt'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: ${{ inputs.java-distribution }}
+        cache: gradle
+    - name: Run tests
+      run: ./gradlew --no-daemon --stacktrace test
+      shell: bash
+    - name: Collect test results
+      shell: bash
+      run: |
+          mkdir -p /tmp/codacy
+          find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" -exec echo {} \; -exec cp --parents {} /tmp/codacy \;
+    - name: Archive test report
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: /tmp/codacy

@@ -1,0 +1,32 @@
+name: 'MA Node CI Build'
+description: 'A collection of common node jobs and cache operations'
+inputs:
+  node-version:
+    description: 'The Node version to set up.'
+    required: true
+    default: 14
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.os }}-cache-node-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cache-node-modules-
+          ${{ runner.os }}-
+    - name: Install Dependencies
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'yarn'
+    - run: yarn install # will run `yarn install` command
+      shell: bash
+    - name: Build
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ inputs.node-version }}
+    - run: yarn build # will run `yarn build` command
+      shell: bash
