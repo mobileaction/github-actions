@@ -5,6 +5,10 @@ inputs:
     description: 'The Node version to set up.'
     required: true
     default: 14
+  yarn-command:
+    description: 'Command to run that is defined in package.json'
+    required: true
+    default: lint
 runs:
   using: "composite"
   steps:
@@ -28,5 +32,5 @@ runs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ inputs.node-version }}
-    - run: yarn lint:all # will run `yarn lint:all` command
+    - run: yarn ${{ inputs.yarn-command }}
       shell: bash

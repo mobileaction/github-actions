@@ -18,4 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: mobileaction/github-actions/node/lint@v1
+        with:
+          yarn-command: lint:all-report
 ```
