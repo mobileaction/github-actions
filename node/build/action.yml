@@ -14,7 +14,7 @@ runs:
   steps:
     - uses: actions/checkout@v3
     - name: Cache node modules
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: '**/node_modules'
         key: ${{ runner.os }}-cache-node-modules-${{ hashFiles('**/yarn.lock') }}
@@ -22,15 +22,12 @@ runs:
           ${{ runner.os }}-cache-node-modules-
           ${{ runner.os }}-
     - name: Install Dependencies
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'yarn'
     - run: yarn install # will run `yarn install` command
       shell: bash
     - name: Build
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ inputs.node-version }}
-    - run: yarn ${{ inputs.yarn-command }}
+      run: yarn ${{ inputs.yarn-command }}
       shell: bash
