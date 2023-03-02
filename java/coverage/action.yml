@@ -8,14 +8,14 @@ runs:
       uses: actions/download-artifact@v3
       with:
         name: test-results
-    - name: Find files
+    - name: Find files and Send DeepSource
       shell: bash
-      run: echo "files=$(find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" | paste -s -d ',' -)" >> $GITHUB_ENV
-    - name: Run DeepSource Reporter
-      shell: bash
-      run: |
-            # Install the CLI
-            curl https://deepsource.io/cli | sh
-            # Send the report to DeepSource
-            find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" -exec ./bin/deepsource report --analyzer test-coverage --key java --value-file {}
-
+      run: | 
+        # Install the CLI
+        curl https://deepsource.io/cli | sh
+        # Send the reports to DeepSource
+        xmlFiles=( $(find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml") )                                                    ✔  at 16:03:01 
+        for i in ${xmlFiles[@]}
+        do
+           ./bin/deepsource report --analyzer test-coverage --key java --value-file $i
+        done
