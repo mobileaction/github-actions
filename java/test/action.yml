@@ -25,10 +25,10 @@ runs:
     - name: Collect test results
       shell: bash
       run: |
-          mkdir -p /tmp/codacy
-          find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" -exec echo {} \; -exec cp --parents {} /tmp/codacy \;
+          mkdir -p /tmp/deepsource
+          find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" -exec echo {} \; -exec cp --parents {} /tmp/deepsource \;
     - name: Archive test report
       uses: actions/upload-artifact@v3
       with:
         name: test-results
-        path: /tmp/codacy
+        path: /tmp/deepsource
