@@ -17,4 +17,5 @@ runs:
             # Install the CLI
             curl https://deepsource.io/cli | sh
             # Send the report to DeepSource
-            ./bin/deepsource report --analyzer test-coverage --key java --value-file ./build/reports/jacoco/test/jacocoTestReport.xml
+            find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" -exec ./bin/deepsource report --analyzer test-coverage --key java --value-file {}
+
