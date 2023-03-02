@@ -14,8 +14,7 @@ runs:
         # Install the CLI
         curl https://deepsource.io/cli | sh
         # Send the reports to DeepSource
-        xmlFiles=( $(find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml") )                                                    ✔  at 16:03:01 
-        for i in ${xmlFiles[@]}
+        for i in $(find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml")
         do
            ./bin/deepsource report --analyzer test-coverage --key java --value-file $i
         done
