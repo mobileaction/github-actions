@@ -1,9 +1,5 @@
 name: 'MA Java CI Coverage'
 description: 'A collection of common java jobs and cache operations'
-inputs:
-  codacy-project-token:
-    description: 'Codacy Project token taken from codacy'
-    required: true
 runs:
   using: "composite"
   steps:
@@ -15,8 +11,9 @@ runs:
     - name: Find files
       shell: bash
       run: echo "files=$(find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" | paste -s -d ',' -)" >> $GITHUB_ENV
-    - name: Run codacy-coverage-reporter
-      uses: codacy/codacy-coverage-reporter-action@v1
-      with:
-        project-token: ${{ inputs.codacy-project-token }}
-        coverage-reports: ${{ env.files }}
+    - name: Run DeepSource Reporter
+      run: |
+            # Install the CLI
+            curl https://deepsource.io/cli | sh
+            # Send the report to DeepSource
+            ./bin/deepsource report --analyzer test-coverage --key java --value-file ./build/reports/jacoco/test/jacocoTestReport.xml
