@@ -12,6 +12,7 @@ runs:
       shell: bash
       run: echo "files=$(find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" | paste -s -d ',' -)" >> $GITHUB_ENV
     - name: Run DeepSource Reporter
+      shell: bash
       run: |
             # Install the CLI
             curl https://deepsource.io/cli | sh
