@@ -12,9 +12,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@main
     - name: Cache node modules
-      uses: actions/cache@v3
+      uses: actions/cache@main
       with:
         path: '**/node_modules'
         key: ${{ runner.os }}-cache-node-modules-${{ hashFiles('**/yarn.lock') }}
@@ -22,7 +22,7 @@ runs:
           ${{ runner.os }}-cache-node-modules-
           ${{ runner.os }}-
     - name: Install Dependencies
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@main
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'yarn'
