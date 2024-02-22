@@ -13,12 +13,16 @@ on:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
+
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 jobs:
   build_test:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: mobileaction/github-actions/java/test_analyze@main
+      - uses: mobileaction/github-actions/java/test_sonar@main
 ```
 
 ## Gradle File Update
