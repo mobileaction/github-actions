@@ -34,4 +34,5 @@ runs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
     - name: Build and analyze
+      shell: bash
       run: ./gradlew build sonar --info
