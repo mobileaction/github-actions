@@ -1,6 +1,8 @@
-# Github Action Java project with Sonar
+# Github Action Java project Flows
 
-## Github Action Sample
+## Sonar Cloud Test and Analyse Operations
+
+### Github Actions
 
 - Define SONAR_TOKEN on Github Repository Secrets, value is on Sonar
 
@@ -10,7 +12,6 @@ on:
   push:
     branches:
       - dev
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -22,10 +23,10 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: mobileaction/github-actions/java/test_sonar@main
+      - uses: mobileaction/github-actions/java/test_sonar@v3
 ```
 
-## Gradle File Update
+### Gradle File Update
 
 - Apply Sonar plugin on gradle file
 ```
@@ -45,4 +46,23 @@ sonar {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
+```
+
+## Basic Test Operations
+
+### Github Actions
+
+```
+name: Main
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mobileaction/github-actions/java/test@v3
 ```

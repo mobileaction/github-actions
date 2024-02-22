@@ -1,5 +1,5 @@
 name: 'MA Java CI Test'
-description: 'A collection of common java jobs and cache operations'
+description: 'Java build and test flow'
 inputs:
   java-version:
     description: 'The Java version to set up. Takes a whole or semver Java version.'
@@ -12,23 +12,19 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK
-      uses: actions/setup-java@v3
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
       with:
         java-version: ${{ inputs.java-version }}
         distribution: ${{ inputs.java-distribution }}
         cache: gradle
-    - name: Run tests
-      run: ./gradlew --no-daemon --stacktrace test
-      shell: bash
-    - name: Collect test results
-      shell: bash
-      run: |
-          mkdir -p /tmp/deepsource
-          find . -type f -regex ".*/reports/jacoco/test/jacocoTestReport.xml" -exec echo {} \; -exec cp --parents {} /tmp/deepsource \;
-    - name: Archive test report
-      uses: actions/upload-artifact@v3
+    - name: Cache Gradle packages
+      uses: actions/cache@v4
       with:
-        name: test-results
-        path: /tmp/deepsource
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+        restore-keys: ${{ runner.os }}-gradle
+    - name: Build and analyze
+      shell: bash
+      run: ./gradlew build
