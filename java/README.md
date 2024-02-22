@@ -6,13 +6,10 @@
 
 - Define SONAR_TOKEN on Github Repository Secrets, value is on Sonar
 
-main.yml
+prTest.yml
 ```
-name: Main
+name: 'PR Test'
 on:
-  push:
-    branches:
-      - dev
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -24,7 +21,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: mobileaction/github-actions/java/test_sonar@v3
+      - uses: mobileaction/github-actions/java/test_sonar@main
 ```
 
 ### Gradle File Update
@@ -53,13 +50,14 @@ sonar {
 
 ### Github Actions
 
-pre_deploy.yml
+branchTest.yml
 ```
-name: PreDeploy
+name: 'Branch Test'
 on:
   push:
     branches:
       - master
+      - dev
 
 jobs:
   build_test:
