@@ -6,12 +6,17 @@
 
 - Define SONAR_TOKEN on Github Repository Secrets, value is on Sonar
 
-prTest.yml
+sonarTest.yml
 ```
-name: 'PR Test'
+name: 'Sonar Test'
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    branches-ignore:
+      - master
+  push:
+    branches:
+      - dev
 
 env:
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -21,7 +26,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: mobileaction/github-actions/java/test_sonar@main
+      - uses: mobileaction/github-actions/java/test_sonar@v3
 ```
 
 ### Gradle File Update
@@ -48,16 +53,17 @@ sonar {
 
 ## Basic Test Operations
 
+To optimize deployment tests we can use basic tests
+
 ### Github Actions
 
-branchTest.yml
+basicTest.yml
 ```
-name: 'Branch Test'
+name: 'Basic Test'
 on:
   push:
     branches:
       - master
-      - dev
 
 jobs:
   build_test:
