@@ -6,6 +6,7 @@
 
 - Define SONAR_TOKEN on Github Repository Secrets, value is on Sonar
 
+main.yml
 ```
 name: Main
 on:
@@ -52,8 +53,9 @@ sonar {
 
 ### Github Actions
 
+pre_deploy.yml
 ```
-name: Main
+name: PreDeploy
 on:
   push:
     branches:
