@@ -1,0 +1,8 @@
+runs:
+  using: "composite"
+  steps:
+    - name: Test Summary
+      uses: test-summary/action@v2
+      with:
+        paths: "test-results/test/TEST-*.xml"
+      if: always()
