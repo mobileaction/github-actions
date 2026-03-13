@@ -26,4 +26,4 @@ runs:
       run: ./gradlew build
       
     - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@v5 # Updated to latest
+      uses: gradle/actions/dependency-submission@v5
