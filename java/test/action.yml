@@ -29,10 +29,9 @@ runs:
       shell: bash
       run: ./gradlew build
 
-    # Creates the release in Sentry and associates commits
+    # Checks if SENTRY_PROJECT exists before trying to create a release
     - name: Create Sentry Release
-      if: github.event_name == 'push'
+      if: github.event_name == 'push' && env.SENTRY_PROJECT != ''
       uses: getsentry/action-release@v3
       with:
         environment: ${{ inputs.sentry-environment }}
-        inject: false # Disables JS sourcemap injection for Java projects
