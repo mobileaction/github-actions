@@ -29,10 +29,6 @@ runs:
       shell: bash
       run: ./gradlew build
 
-    # Generates the full Gradle dependency tree and pushes it to GitHub
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@v5
-
     # Creates the release in Sentry and associates commits
     - name: Create Sentry Release
       if: github.event_name == 'push'
