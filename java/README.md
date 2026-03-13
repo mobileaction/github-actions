@@ -26,7 +26,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: mobileaction/github-actions/java/test_sonar@v3
+      - uses: mobileaction/github-actions/java/test_sonar@v4
 ```
 
 ### Gradle File Update
@@ -69,6 +69,9 @@ jobs:
   build_test:
     name: Build and Test
     runs-on: ubuntu-latest
+    # Required permission for the dependency submission step in your composite action
+    permissions:
+      contents: write
     steps:
-      - uses: mobileaction/github-actions/java/test@v3
+      - uses: mobileaction/github-actions/java/test@v4
 ```
