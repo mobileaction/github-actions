@@ -9,16 +9,18 @@ inputs:
     description: 'Java distribution.'
     required: true
     default: 'temurin'
+  create-sentry-release:
+     description: 'Whether to create a Sentry release as part of this CI run.'
+     required: false
+     default: 'false'    
   sentry-environment:
-    description: 'Sentry environment for the release (e.g., development, staging, production)'
+    description: 'Sentry environment for the release (e.g., development, staging, production).'
     required: false
     default: 'production'
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
 
     - name: Set up JDK
       uses: actions/setup-java@v5
@@ -31,9 +33,15 @@ runs:
       shell: bash
       run: ./gradlew build
 
-    # Checks if SENTRY_PROJECT exists before trying to create a release
+     # Ensure full git history is available only when creating a Sentry release
+    - name: Fetch full git history for Sentry release
+      if: github.event_name == 'push' && inputs.create-sentry-release == 'true'
+      shell: bash
+      run: |
+         git fetch --prune --unshallow || git fetch --prune --tags
+
     - name: Create Sentry Release
-      if: github.event_name == 'push' && env.SENTRY_PROJECT != ''
+      if: github.event_name == 'push' && inputs.create-sentry-release == 'true'
       uses: getsentry/action-release@v3
       with:
         environment: ${{ inputs.sentry-environment }}
