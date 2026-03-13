@@ -9,6 +9,10 @@ inputs:
     description: 'Java distribution.'
     required: true
     default: 'temurin'
+  sentry-environment:
+    description: 'Sentry environment for the release (e.g., development, staging, production)'
+    required: false
+    default: 'production'
 runs:
   using: "composite"
   steps:
@@ -24,3 +28,15 @@ runs:
     - name: Build and analyze
       shell: bash
       run: ./gradlew build
+
+    # Generates the full Gradle dependency tree and pushes it to GitHub
+    - name: Generate and submit dependency graph
+      uses: gradle/actions/dependency-submission@v5
+
+    # Creates the release in Sentry and associates commits
+    - name: Create Sentry Release
+      if: github.event_name == 'push'
+      uses: getsentry/action-release@v3
+      with:
+        environment: ${{ inputs.sentry-environment }}
+        inject: false # Disables JS sourcemap injection for Java projects
