@@ -24,6 +24,3 @@ runs:
     - name: Build and analyze
       shell: bash
       run: ./gradlew build
-
-    - name: Generate and submit dependency graph
-      uses: gradle/actions/dependency-submission@v5
