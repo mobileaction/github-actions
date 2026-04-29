@@ -1,0 +1,20 @@
+name: Move v5 tag to v5.1
+
+on:
+  push:
+    branches:
+      - copilot/move-v5-tag-to-v51
+
+jobs:
+  move-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+      - name: Move v5 tag to v5.1
+        run: |
+          git tag -f v5 v5.1
+          git push origin v5 --force
