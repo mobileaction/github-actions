@@ -4,7 +4,7 @@ inputs:
   java-version:
     description: 'The Java version to set up. Takes a whole or semver Java version.'
     required: true
-    default: 17
+    default: '17'
   java-distribution:
     description: 'Java distribution.'
     required: true
@@ -36,7 +36,7 @@ runs:
 
     - name: Upload test reports
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: gradle-test-reports
         path: '**/build/reports/tests/'
