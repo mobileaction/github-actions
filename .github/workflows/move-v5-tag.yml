@@ -1,9 +1,7 @@
 name: Move v5 tag to v5.1
 
 on:
-  push:
-    branches:
-      - copilot/move-v5-tag-to-v51
+  workflow_dispatch:
 
 jobs:
   move-tag:
