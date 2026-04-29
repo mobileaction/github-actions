@@ -34,6 +34,14 @@ runs:
       shell: bash
       run: ./gradlew build sonar --info
 
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: gradle-test-reports
+        path: '**/build/reports/tests/'
+        if-no-files-found: ignore
+
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@v5
       continue-on-error: true
