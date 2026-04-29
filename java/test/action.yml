@@ -33,6 +33,14 @@ runs:
       shell: bash
       run: ./gradlew build
 
+    - name: Upload test reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: gradle-test-reports
+        path: '**/build/reports/tests/'
+        if-no-files-found: ignore
+
      # Ensure full git history is available only when creating a Sentry release
     - name: Fetch full git history for Sentry release
       if: github.event_name == 'push' && inputs.create-sentry-release == 'true'
