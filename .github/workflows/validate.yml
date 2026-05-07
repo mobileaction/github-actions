@@ -1,0 +1,31 @@
+name: Validate
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: actionlint
+        uses: raven-actions/actionlint@v2
+
+      - name: yamllint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .
+          config_data: |
+            extends: default
+            rules:
+              line-length: {max: 200}
+              truthy: {check-keys: false}
+              document-start: disable
+              comments-indentation: disable
+              comments: disable

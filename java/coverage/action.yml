@@ -2,5 +2,4 @@ name: 'MA Java CI Coverage'
 description: 'Coverage analysis flow, not used anymore'
 runs:
   using: "composite"
-  steps:
-
+  steps: []

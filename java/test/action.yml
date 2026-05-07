@@ -10,9 +10,9 @@ inputs:
     required: true
     default: 'temurin'
   create-sentry-release:
-     description: 'Whether to create a Sentry release as part of this CI run.'
-     required: false
-     default: 'false'    
+    description: 'Whether to create a Sentry release as part of this CI run.'
+    required: false
+    default: 'false'
   sentry-environment:
     description: 'Sentry environment for the release (e.g., development, staging, production).'
     required: false
