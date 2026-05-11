@@ -61,10 +61,18 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
+            checks: write
         steps:
             - uses: mobileaction/github-actions/java/test_sonar@v5
               with:
                 java-version: 21
+
+            - name: Publish test results summary
+              uses: dorny/test-reporter@v1
+              with:
+                name: Unit Tests
+                path: '**/target/test-results/test/*.xml'
+                reporter: java-junit
 ```
 
 Also configure SonarCloud in `build.gradle`:
@@ -103,12 +111,21 @@ jobs:
   build_test:
     name: Build and Test
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
     steps:
       - uses: mobileaction/github-actions/java/test@v5
         with:
           java-version: 21
           create-sentry-release: 'true'
           sentry-environment: 'production'
+
+      - name: Publish test results summary
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit Tests
+          path: '**/target/test-results/test/*.xml'
+          reporter: java-junit
 ```
 
 Also configure the Sentry Gradle plugin in `build.gradle` so the CI build can upload source context and create the release:
