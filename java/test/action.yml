@@ -33,17 +33,17 @@ runs:
       shell: bash
       run: ./gradlew build
 
-    - name: Upload test reports
+    - name: Upload Test Results
       if: always()
       uses: actions/upload-artifact@v7
       with:
-        name: gradle-test-reports
-        path: '**/build/reports/tests/'
+        name: test-results
+        path: '**/build/test-results/test/*.xml'
         if-no-files-found: ignore
 
     - name: Publish test results summary
       if: always()
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@v3
       with:
         name: Unit Tests
         path: '**/build/test-results/test/*.xml'
