@@ -32,7 +32,10 @@ Reference an action from any consumer repo, pinning to a major tag:
 
 ## Workflow samples
 
-Drop these files into `.github/workflows/` of a consumer repo. Adjust `java-version`, `sentry-project`, and branch names to match the target service. Secrets (`SONAR_TOKEN`, `SENTRY_AUTH_TOKEN`) must be configured in the repo's GitHub settings.
+Drop these files into `.github/workflows/` of a consumer repo. Adjust `java-version`, `sentry-project`, and branch names to match the target service.
+
+- `SENTRY_AUTH_TOKEN` is provided as an **organization secret** — it is inherited automatically, no per-repo setup needed.
+- `SONAR_TOKEN` must be configured **per repo** in the repo's GitHub Actions secrets — see [Creating your GitHub secrets](https://docs.sonarsource.com/sonarqube-server/10.5/devops-platform-integration/github-integration/adding-sonarqube-analysis-to-your-workflow#creating-your-github-secrets).
 
 ### `sonarTest.yaml` — PR validation with SonarCloud
 
@@ -58,6 +61,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
+            checks: write  # required so the composite can publish JUnit results to the PR
         steps:
             - uses: mobileaction/github-actions/java/test_sonar@v5
               with:
@@ -100,6 +104,8 @@ jobs:
   build_test:
     name: Build and Test
     runs-on: ubuntu-latest
+    permissions:
+      checks: write  # required so the composite can publish JUnit results to the PR
     steps:
       - uses: mobileaction/github-actions/java/test@v5
         with:
