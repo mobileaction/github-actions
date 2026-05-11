@@ -32,7 +32,10 @@ Reference an action from any consumer repo, pinning to a major tag:
 
 ## Workflow samples
 
-Drop these files into `.github/workflows/` of a consumer repo. Adjust `java-version`, `sentry-project`, and branch names to match the target service. Secrets (`SONAR_TOKEN`, `SENTRY_AUTH_TOKEN`) must be configured in the repo's GitHub settings.
+Drop these files into `.github/workflows/` of a consumer repo. Adjust `java-version`, `sentry-project`, and branch names to match the target service.
+
+- `SENTRY_AUTH_TOKEN` is provided as an **organization secret** — it is inherited automatically, no per-repo setup needed.
+- `SONAR_TOKEN` must be configured **per repo** in the repo's GitHub Actions secrets (value from SonarCloud).
 
 ### `sonarTest.yaml` — PR validation with SonarCloud
 
