@@ -35,7 +35,7 @@ Reference an action from any consumer repo, pinning to a major tag:
 Drop these files into `.github/workflows/` of a consumer repo. Adjust `java-version`, `sentry-project`, and branch names to match the target service.
 
 - `SENTRY_AUTH_TOKEN` is provided as an **organization secret** — it is inherited automatically, no per-repo setup needed.
-- `SONAR_TOKEN` must be configured **per repo** in the repo's GitHub Actions secrets. Generate the token from your SonarCloud account — see [Managing Personal Access Tokens](https://docs.sonarsource.com/sonarqube-cloud/managing-your-account/managing-tokens/).
+- `SONAR_TOKEN` must be configured **per repo** in the repo's GitHub Actions secrets — see [Creating your GitHub secrets](https://docs.sonarsource.com/sonarqube-server/10.5/devops-platform-integration/github-integration/adding-sonarqube-analysis-to-your-workflow#creating-your-github-secrets).
 
 ### `sonarTest.yaml` — PR validation with SonarCloud
 
