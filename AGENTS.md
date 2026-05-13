@@ -39,6 +39,7 @@ node/README.md             # Node usage example
 **Consumer permissions required:**
 ```yaml
 permissions:
+  contents: read  # explicit read required when overriding permissions — checkout fails without it
   checks: write   # for dorny/test-reporter to post PR check
 ```
 
