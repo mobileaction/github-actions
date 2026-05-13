@@ -36,12 +36,7 @@ node/README.md             # Node usage example
 
 **What it does:** checkout → JDK setup (Gradle cache) → `./gradlew build` → upload JUnit XML artifacts → publish results via `dorny/test-reporter@v3` → (if enabled) fetch full history → create Sentry release.
 
-**Consumer permissions required:**
-```yaml
-permissions:
-  contents: read  # explicit read required when overriding permissions — checkout fails without it
-  checks: write   # for dorny/test-reporter to post PR check
-```
+**Consumer permissions:** none required. The org default token permissions already include `checks: write`. If you do add an explicit `permissions` block for least-privilege, you must include `contents: read` — specifying any permission resets all others to `none`, which breaks `actions/checkout`.
 
 **Sentry env vars:**
 ```yaml

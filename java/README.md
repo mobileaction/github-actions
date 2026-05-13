@@ -78,9 +78,6 @@ jobs:
   build_test:
     name: Build and Test
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      checks: write  # required so the composite can publish JUnit results to the PR
     steps:
       - uses: mobileaction/github-actions/java/test@v5
         with:
